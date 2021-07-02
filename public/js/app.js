@@ -1522,7 +1522,7 @@
       // event listeners are registered (the mutation observer will take care of them)
 
 
-      this.initializeElements(this.$el, () => {}, componentForClone); // Use mutation observer to detect new elements being added within this component at run-time.
+      this.initializeElements(this.$el, () => {}, componentForClone ? false : true); // Use mutation observer to detect new elements being added within this component at run-time.
       // Alpine's just so darn flexible amirite?
 
       this.listenForNewElementsToInitialize();
@@ -1611,15 +1611,15 @@
       });
     }
 
-    initializeElements(rootEl, extraVars = () => {}, componentForClone = false) {
+    initializeElements(rootEl, extraVars = () => {}, shouldRegisterListeners = true) {
       this.walkAndSkipNestedComponents(rootEl, el => {
         // Don't touch spawns from for loop
         if (el.__x_for_key !== undefined) return false; // Don't touch spawns from if directives
 
         if (el.__x_inserted_me !== undefined) return false;
-        this.initializeElement(el, extraVars, componentForClone ? false : true);
+        this.initializeElement(el, extraVars, shouldRegisterListeners);
       }, el => {
-        if (!componentForClone) el.__x = new Component(el);
+        el.__x = new Component(el);
       });
       this.executeAndClearRemainingShowDirectiveStack();
       this.executeAndClearNextTickStack(rootEl);
@@ -1849,7 +1849,7 @@
   }
 
   const Alpine = {
-    version: "2.8.2",
+    version: "2.8.1",
     pauseMutationObserver: false,
     magicProperties: {},
     onComponentInitializeds: [],
@@ -3832,7 +3832,7 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 window.Pusher = __webpack_require__(/*! pusher-js */ "./node_modules/pusher-js/dist/web/pusher.js");
 window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__.default({
   broadcaster: 'pusher',
-  key: "",
+  key: "Vd0yd4EISKreDCpLScks2dyeICOQPdXm",
   wsHost: window.location.hostname,
   wsPort: 6001,
   forceTLS: false,
@@ -4174,27 +4174,6 @@ var PusherChannel = /*#__PURE__*/function (_Channel) {
       return this;
     }
     /**
-     * Listen for all events on the channel instance.
-     */
-
-  }, {
-    key: "listenToAll",
-    value: function listenToAll(callback) {
-      var _this2 = this;
-
-      this.subscription.bind_global(function (event, data) {
-        if (event.startsWith('pusher:')) {
-          return;
-        }
-
-        var namespace = _this2.options.namespace.replace(/\./g, '\\');
-
-        var formattedEvent = event.startsWith(namespace) ? event.substring(namespace.length + 1) : '.' + event;
-        callback(formattedEvent, data);
-      });
-      return this;
-    }
-    /**
      * Stop listening for an event on the channel instance.
      */
 
@@ -4205,21 +4184,6 @@ var PusherChannel = /*#__PURE__*/function (_Channel) {
         this.subscription.unbind(this.eventFormatter.format(event), callback);
       } else {
         this.subscription.unbind(this.eventFormatter.format(event));
-      }
-
-      return this;
-    }
-    /**
-     * Stop listening for all events on the channel instance.
-     */
-
-  }, {
-    key: "stopListeningToAll",
-    value: function stopListeningToAll(callback) {
-      if (callback) {
-        this.subscription.unbind_global(callback);
-      } else {
-        this.subscription.unbind_global();
       }
 
       return this;
@@ -27562,7 +27526,7 @@ runtime.setup(pusher_Pusher);
 /******/ 					__webpack_require__.m[moduleId] = moreModules[moduleId];
 /******/ 				}
 /******/ 			}
-/******/ 			if(runtime) var result = runtime(__webpack_require__);
+/******/ 			if(runtime) runtime(__webpack_require__);
 /******/ 			if(parentChunkLoadingFunction) parentChunkLoadingFunction(data);
 /******/ 			for(;i < chunkIds.length; i++) {
 /******/ 				chunkId = chunkIds[i];
@@ -27571,7 +27535,7 @@ runtime.setup(pusher_Pusher);
 /******/ 				}
 /******/ 				installedChunks[chunkIds[i]] = 0;
 /******/ 			}
-/******/ 			return __webpack_require__.O(result);
+/******/ 			__webpack_require__.O();
 /******/ 		}
 /******/ 		
 /******/ 		var chunkLoadingGlobal = self["webpackChunk"] = self["webpackChunk"] || [];

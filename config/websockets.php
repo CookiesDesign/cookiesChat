@@ -29,7 +29,7 @@ return [
             'secret' => env('PUSHER_APP_SECRET'),
             'path' => env('PUSHER_APP_PATH'),
             'capacity' => null,
-            'enable_client_messages' => false,
+            'enable_client_messages' => true,
             'enable_statistics' => true,
         ],
     ],
@@ -59,7 +59,7 @@ return [
     /*
      * This path will be used to register the necessary routes for the package.
      */
-    'path' => 'laravel-websockets',
+    'path' => 'admin/websockets',
 
     /*
      * Dashboard Routes Middleware
